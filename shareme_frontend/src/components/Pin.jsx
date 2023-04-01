@@ -5,17 +5,22 @@ import { MdDownloadForOffline } from "react-icons/md";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { client, urlFor } from "../client";
-import logo from "../assets/logo.png";
-import { fetchUser } from "../utils/fetchUser";
 
 const Pin = ({ pin }) => {
   const [postHovered, setPostHovered] = useState(false);
   const navigate = useNavigate();
-  const user = fetchUser();
   const { postedBy, image, _id, destination, save } = pin;
 
-  const alreadySaved = !!save?.filter((item) => item.postedBy._id === user.sub)
-    ?.length;
+  const user =
+    localStorage.getItem("user") !== "undefined"
+      ? JSON.parse(localStorage.getItem("user"))
+      : localStorage.clear();
+
+  let alreadySaved = pin?.save?.filter(
+    (item) => item?.postedBy?._id === user?.googleId
+  );
+
+  alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
   const savePin = (id) => {
     if (alreadySaved?.length === 0) {
@@ -62,7 +67,7 @@ const Pin = ({ pin }) => {
         )}
 
         {postHovered && (
-          <div className="absolute top-0 w-full h-full  flex flex-col justify-between p-1 pr-2 pb-2 pt-2 z-50 ">
+          <div className="absolute top-0 w-full h-full  flex flex-col justify-between p-3 z-50 ">
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 <a
@@ -75,12 +80,12 @@ const Pin = ({ pin }) => {
                 </a>
               </div>
 
-              {alreadySaved ? (
+              {alreadySaved?.length !== 0 ? (
                 <button
                   type="button"
                   className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
                 >
-                  {save?.length} Saved
+                  {pin?.save?.length} Saved
                 </button>
               ) : (
                 <button
@@ -91,7 +96,7 @@ const Pin = ({ pin }) => {
                   }}
                   className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
                 >
-                  Save
+                  {pin?.save?.length} Save
                 </button>
               )}
             </div>
@@ -101,7 +106,7 @@ const Pin = ({ pin }) => {
                   href={destination}
                   target="_blank"
                   rel="noreferrer"
-                  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
+                  className="bg-white flex items-center gap-2 text-black font-bold p-2 px-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
                 >
                   <BsFillArrowUpRightCircleFill />
                   {destination.length > 20
