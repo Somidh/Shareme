@@ -48,7 +48,7 @@ const CreatePin = ({ user }) => {
       setWrongImageType(true);
     }
   };
- 
+
   console.log("asset:", imageAsset);
 
   const savePin = () => {
@@ -89,7 +89,7 @@ const CreatePin = ({ user }) => {
           Please fill in all the fields
         </p>
       )}
-      <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5 w-full ">
+      <div className="w-full lg:w-4/5 flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3  ">
         <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
           <div className="flex flex-col items-center justify-center border-2 border-dotted border-gray-300 p-3 w-full h-420">
             {loading && <Spinner />}
